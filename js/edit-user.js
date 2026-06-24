@@ -42,8 +42,20 @@ form.addEventListener("submit", function (event) {
         alert("Họ và tên không được để trống")
         return;
     }
-    if (inputUsername === "" || inputPassword === "") {
-        alert("Username và Password không được để trống")
+    if (inputUsername === "") {
+        alert("Username không được để trống")
+        return;
+    }
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+
+    if (inputEmail === "") {
+        alert("Email không được để trống")
+        return;
+    }
+    if (emailRegex.test(inputEmail) === false) {
+        alert("Email không đúng định dạng")
+        // document.querySelector(".email-error").classList.remove("hidden")
         return;
     }
     if (inputPassword.length < 8) {
