@@ -46,18 +46,10 @@ form.addEventListener("submit", function (event) {
         alert("Username không được để trống")
         return;
     }
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+     if(inputPassword ===""){
+        alert("Password không được để trống")
+     }
 
-    if (inputEmail === "") {
-        alert("Email không được để trống")
-        return;
-    }
-    if (emailRegex.test(inputEmail) === false) {
-        alert("Email không đúng định dạng")
-        // document.querySelector(".email-error").classList.remove("hidden")
-        return;
-    }
     if (inputPassword.length < 8) {
         alert("Mật khẩu tối thiểu 8 ký tự")
         return;
