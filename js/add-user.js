@@ -1,7 +1,20 @@
 
 
 let users = JSON.parse(localStorage.getItem("users"))
+let eye = document.querySelector(".fa-eye");
+let eyeSlash = document.querySelector(".fa-eye-slash");
+let inputPassword = document.getElementById("password")
+eye.addEventListener("click", () => {
+  inputPassword.type = "text";
+  eye.style.display = "none";
+  eyeSlash.style.display = "inline-block";
+});
 
+eyeSlash.addEventListener("click", () => {
+  inputPassword.type = "password";
+  eyeSlash.style.display = "none";
+  eye.style.display = "inline-block";
+});
 let form = document.getElementById("add-new-user-form")
 form.addEventListener("submit", function (event) {
     event.preventDefault()
@@ -44,6 +57,10 @@ form.addEventListener("submit", function (event) {
     //     return;
     // }
     //??tại sao thông báo email không đúng định dạng hiện lên dù nhập đúng
+    if (inputPassword === "") {
+        alert("Mật khẩu không được để trống")
+        return;
+    }
     if (inputPassword.length < 8) {
         alert("Mật khẩu tối thiểu 8 ký tự")
         return;
@@ -69,17 +86,18 @@ form.addEventListener("submit", function (event) {
         status: inputStatus
     }
     users.push(newUser)
+
     localStorage.setItem("users", JSON.stringify(users))//lưu thông tin người dùng mới vào localstorage
 
     let msg = document.getElementById("msg");
     let add = document.getElementById("add-toast");
-   
+
     add.classList.remove("hidden");// hiện thông báo
-     msg.classList.add("show");//hiện hộp mess
+    msg.classList.add("show");//hiện hộp mess
     setTimeout(() => {
         document.getElementById("msg").classList.remove("show");
-
-    }, 2000);
+        window.location.href = "dashboard.html"
+    }, 1500);
 });
 document.querySelector(".back-btn").addEventListener("click", function () {
     window.location.href = "dashboard.html"
