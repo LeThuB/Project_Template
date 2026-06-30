@@ -3,16 +3,18 @@ let users = JSON.parse(localStorage.getItem("users")) || []
 // console.log(users)
 function renderUsers(list = users) {
   let tBody = document.getElementById("table-body");
+ 
   tBody.innerHTML = ""
   list.forEach((element, index) => {
     let tr = document.createElement("tr")
+   
     tr.innerHTML = `
       <td>${element.usercode}</td>
        <td>${element.username}</td>
        <td>${element.email}</td>
        <td>${element.role}</td>
        <td>${element.birthday}</td>
-        <td>${element.status}</td>
+        <td class ="${element.status.toLowerCase()}">${element.status}</td>
     
     
           <td>  <div class="action-buttons">
@@ -23,8 +25,11 @@ function renderUsers(list = users) {
     `
     tBody.appendChild(tr)
   })
+ 
 }
-renderUsers()
+
+ renderUsers()
+
 
 //xóa từng hàng
 
@@ -32,13 +37,14 @@ let tBody = document.getElementById("table-body")
 tBody.addEventListener("click", function (event) {
   //  console.log(event.target)
   if (event.target.classList.contains("btn-delete")) {
-    let deleteUser = Number(event.target.id)
+   let xoa = confirm("Bạn có chắc chắn muốn xóa")
+    if (xoa){let deleteUser = Number(event.target.id)
 
     // console.log("kiểm tra" + deleteUser)
     // console.log(typeof(event.target.id))
     users.splice(deleteUser, 1)
     localStorage.setItem("users", JSON.stringify(users))
-    renderUsers()
+    renderUsers()}
   }
 })
 // console.log(users)
@@ -76,4 +82,3 @@ tBody.addEventListener("click", function (event) {
 
 })
 let userEdit = JSON.parse(localStorage.getItem("userEdit"))
-console.log(userEdit)

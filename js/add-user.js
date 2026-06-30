@@ -1,24 +1,57 @@
 
-
-let users = JSON.parse(localStorage.getItem("users"))
+let users = JSON.parse(localStorage.getItem("users")) || [];
 let eye = document.querySelector(".fa-eye");
 let eyeSlash = document.querySelector(".fa-eye-slash");
 let inputPassword = document.getElementById("password")
 eye.addEventListener("click", () => {
-  inputPassword.type = "text";
-  eye.style.display = "none";
-  eyeSlash.style.display = "inline-block";
+    inputPassword.type = "text";
+    eye.style.display = "none";
+    eyeSlash.style.display = "inline-block";
 });
 
 eyeSlash.addEventListener("click", () => {
-  inputPassword.type = "password";
-  eyeSlash.style.display = "none";
-  eye.style.display = "inline-block";
+    inputPassword.type = "password";
+    eyeSlash.style.display = "none";
+    eye.style.display = "inline-block";
 });
+function validatePassword() {
+    let passwordIn = document.getElementById("password").value
+    let passwordError = document.getElementById("password-error");
+    let passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
+    let passwordRegex2 = /^(?=.*[a-z])(?=.*[A-Z]).+$/;
+
+    passwordError.textContent = ""
+
+    if (passwordIn === "") {
+        passwordError.textContent = "Mật khẩu không được để trống";
+        return false;
+    }
+    if (passwordIn.length < 8) {
+        passwordError.textContent = "Mật khẩu tối thiểu 8 ký tự"
+        return false;
+    }
+    if (passwordRegex.test(passwordIn) === false) {
+        passwordError.textContent = "Mật khẩu phải có cả chữ và số";
+        return false;
+    }
+    if (passwordRegex2.test(passwordIn) === false) {
+        passwordError.textContent = "Mật khẩu phải có cả chữ hoa và chữ thường";
+        return false;
+    }
+    return true;
+}
+
 let form = document.getElementById("add-new-user-form")
+inputPassword.addEventListener("input", function () {
+    document.getElementById("password-error").textContent = "";
+});
 form.addEventListener("submit", function (event) {
     event.preventDefault()
     // console.log("kiểm tra")
+    document.getElementById("hovatenError").textContent = "";
+    document.getElementById("username-error").textContent = "";
+    document.getElementById("email-error").textContent = "";
+
     let inputHovaten = document.getElementById("hovaten").value;
     let inputUsername = document.getElementById("username").value
     let inputEmail = document.getElementById("email").value.trim()
@@ -38,33 +71,27 @@ form.addEventListener("submit", function (event) {
     let inputDescription = document.querySelector(".description-text-input").value
     // console.log(inputDescription)
     if (inputHovaten === "") {
-        alert("Họ và tên không được để trống")
+        document.getElementById("hovatenError").textContent = "Họ và tên không được để trống"
         return;
     }
     if (inputUsername === "") {
-        alert("Username không được để trống")
+        document.getElementById("username-error").textContent = "Username không được để trống"
         return;
     }
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (inputEmail === "") {
-        alert("Email không được để trống")
+        document.getElementById("email-error").textContent = "Email không được để trống"
+        return;
+    }
+    if (emailRegex.test(inputEmail) === false) {
+        document.getElementById("email-error").textContent = "Email không đúng định dạng"
         return;
     }
 
-    // let emailRegex = /^[^\s@]+@[\s@]+\.[\s@]+$/;
+    if (validatePassword() === false) {
+        return;
+    }
 
-    // if (emailRegex.test(inputEmail) === false) {
-    //     alert("Email không đúng định dạng")
-    //     return;
-    // }
-    //??tại sao thông báo email không đúng định dạng hiện lên dù nhập đúng
-    if (inputPassword === "") {
-        alert("Mật khẩu không được để trống")
-        return;
-    }
-    if (inputPassword.length < 8) {
-        alert("Mật khẩu tối thiểu 8 ký tự")
-        return;
-    }
     let max = 0;
     for (let i = 0; i < users.length; i = i + 1) {
         let number = Number(users[i].usercode.substring(1))
@@ -73,7 +100,6 @@ form.addEventListener("submit", function (event) {
         }
     };
     let newCode = "U" + (max + 1);
-
     let newUser = {
         usercode: newCode,
         hovaten: inputHovaten,
@@ -87,7 +113,8 @@ form.addEventListener("submit", function (event) {
     }
     users.push(newUser)
 
-    localStorage.setItem("users", JSON.stringify(users))//lưu thông tin người dùng mới vào localstorage
+    localStorage.setItem("users", JSON.stringify(users));
+    //   localStorage.setItem("users", JSON.stringify(users))//lưu thông tin người dùng mới vào localstorage
 
     let msg = document.getElementById("msg");
     let add = document.getElementById("add-toast");

@@ -130,7 +130,7 @@
   color: #0d6efd;
   transition: transform 0.5s ease-out;
   position: absolute;
-  bottom: 14px;
+  top: 50%;
   right: 14px;
 }
 .password-input .fa-eye-slash {
@@ -275,4 +275,11 @@ select {
 /* HIDDEN */
 .hidden {
   display: none;
+}
+
+.error {
+    margin-top: 5px;
+     color: #e74c3c;
+    font-size: 12px;
+    font-weight: 400;
 }
